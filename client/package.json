@@ -1,0 +1,32 @@
+{
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "eject": "expo eject"
+  },
+  "dependencies": {
+    "@emotion/core": "^10.0.10",
+    "@emotion/native": "^10.0.11",
+    "expo": "^33.0.0",
+    "google-maps-react": "^2.0.2",
+    "react": "16.8.3",
+    "react-dom": "^16.8.6",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-33.0.0.tar.gz",
+    "react-native-maps": "~0.24.0",
+    "react-native-paper": "^2.16.0",
+    "react-native-web": "^0.11.4"
+  },
+  "devDependencies": {
+    "@expo/webpack-config": "^0.5.10",
+    "@types/google-maps-react": "^2.0.1",
+    "@types/react": "^16.8.19",
+    "@types/react-native": "^0.57.60",
+    "babel-preset-expo": "^5.1.1",
+    "typescript": "^3.4.5",
+    "webpack-merge": "^4.2.1"
+  },
+  "private": true
+}
