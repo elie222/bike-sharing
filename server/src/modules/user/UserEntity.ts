@@ -49,13 +49,5 @@ export default class User {
 
   @Column({ nullable: true })
   @Field({ nullable: true })
-  auditor?: boolean
-
-  @Column({ nullable: true })
-  @Field({ nullable: true })
-  ssoLogin?: string
-
-  @Column({ nullable: true })
-  @Field({ nullable: true })
   phone?: string
 }

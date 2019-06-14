@@ -33,47 +33,11 @@ class UpdateUserInput implements Partial<User> {
   @Field(type => String, { nullable: true })
   phone?: string
 
-  @Field(type => String, { nullable: true })
-  ssoLogin?: string
-
-  @Field(type => Boolean, { defaultValue: false })
-  auditor?: boolean
-
   // @Field(type => [Role], { nullable: true })
   // roles?: Role[]
 
   @Field(type => Boolean, { nullable: true })
   isAdmin?: boolean
-}
-
-@InputType()
-class AdminCreateUserInput implements Partial<User> {
-  @Field(type => String)
-  username: string
-
-  @Field(type => String)
-  email: string
-
-  @Field(type => String)
-  password: string
-
-  @Field(type => ProfileInput)
-  profile: ProfileInput
-
-  @Field(type => String, { nullable: true })
-  phone?: string
-
-  @Field(type => String, { nullable: true })
-  ssoLogin?: string
-
-  @Field(type => Boolean, { defaultValue: false })
-  auditor: boolean
-
-  // @Field(type => [Role])
-  // roles: Role[]
-
-  @Field(type => Boolean)
-  isAdmin: boolean
 }
 
 @Service()
@@ -87,47 +51,6 @@ export default class UserResolver {
     const all = await this.service.find()
 
     return all
-  }
-
-  @Query(returns => [User])
-  async auditors() {
-    return await this.service.find({ auditor: true })
-  }
-
-  // this overrides accounts js `createUser` function
-  @Mutation(returns => ID)
-  async createUser(@Arg('user', returns => AdminCreateUserInput) user: AdminCreateUserInput) {
-    const users = await this.service.find()
-
-    // if we already have a user in the system, disable sign up using this method.
-    if (users.length) {
-      throw new Error(
-        'Please use adminCreateUser to create a new user. Regular sign up is disabled.'
-      )
-    }
-
-    // create admin super user
-
-    const createdUserId = await accountsPassword.createUser({
-      ...user,
-      // give super user all roles
-      roles: [Role.SuperUser, Role.Admin, Role.ReadOnly],
-    })
-
-    return createdUserId
-  }
-
-  @Mutation(returns => User)
-  @Authorized(Role.Admin)
-  async adminCreateUser(@Arg('user', returns => AdminCreateUserInput) user: AdminCreateUserInput) {
-    const createdUserId = await accountsPassword.createUser({
-      ...user,
-      roles: user.isAdmin ? [Role.Admin, Role.ReadOnly] : [Role.ReadOnly],
-    })
-
-    const createdUser = await this.service.findOne(createdUserId)
-
-    return createdUser
   }
 
   @Mutation(returns => User)

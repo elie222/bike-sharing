@@ -12,17 +12,6 @@ export type Scalars = {
   DateTime: any
 }
 
-export type AdminCreateUserInput = {
-  username: Scalars['String']
-  email: Scalars['String']
-  password: Scalars['String']
-  profile: ProfileInput
-  phone?: Maybe<Scalars['String']>
-  ssoLogin?: Maybe<Scalars['String']>
-  auditor?: Maybe<Scalars['Boolean']>
-  isAdmin: Scalars['Boolean']
-}
-
 export type AuthenticateParamsInput = {
   access_token?: Maybe<Scalars['String']>
   access_token_secret?: Maybe<Scalars['String']>
@@ -82,7 +71,6 @@ export type Mutation = {
   refreshTokens?: Maybe<LoginResult>
   logout?: Maybe<Scalars['Boolean']>
   authenticate?: Maybe<LoginResult>
-  adminCreateUser: User
   updateUser: User
 }
 
@@ -136,10 +124,6 @@ export type MutationAuthenticateArgs = {
   params: AuthenticateParamsInput
 }
 
-export type MutationAdminCreateUserArgs = {
-  user: AdminCreateUserInput
-}
-
 export type MutationUpdateUserArgs = {
   user: UpdateUserInput
   userId: Scalars['String']
@@ -159,7 +143,6 @@ export type Query = {
   twoFactorSecret?: Maybe<TwoFactorSecretKey>
   getUser?: Maybe<User>
   users: Array<User>
-  auditors: Array<User>
 }
 
 export enum Role {
@@ -201,8 +184,6 @@ export type UpdateUserInput = {
   password?: Maybe<Scalars['String']>
   profile?: Maybe<ProfileInput>
   phone?: Maybe<Scalars['String']>
-  ssoLogin?: Maybe<Scalars['String']>
-  auditor?: Maybe<Scalars['Boolean']>
   isAdmin?: Maybe<Scalars['Boolean']>
 }
 
@@ -215,8 +196,6 @@ export type User = {
   updatedAt?: Maybe<Scalars['DateTime']>
   profile: Profile
   roles: Array<Role>
-  auditor?: Maybe<Scalars['Boolean']>
-  ssoLogin?: Maybe<Scalars['String']>
   phone?: Maybe<Scalars['String']>
 }
 

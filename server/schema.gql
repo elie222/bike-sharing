@@ -3,17 +3,6 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
-input AdminCreateUserInput {
-  username: String!
-  email: String!
-  password: String!
-  profile: ProfileInput!
-  phone: String
-  ssoLogin: String
-  auditor: Boolean = false
-  isAdmin: Boolean!
-}
-
 type Bike {
   _id: ID!
   createdAt: DateTime!
@@ -28,8 +17,6 @@ The javascript `Date` as string. Type represents date and time as the ISO Date s
 scalar DateTime
 
 type Mutation {
-  createUser(user: AdminCreateUserInput!): ID!
-  adminCreateUser(user: AdminCreateUserInput!): User!
   updateUser(user: UpdateUserInput!, userId: String!): User!
 }
 
@@ -45,7 +32,6 @@ input ProfileInput {
 
 type Query {
   users: [User!]!
-  auditors: [User!]!
 }
 
 enum Role {
@@ -60,8 +46,6 @@ input UpdateUserInput {
   password: String
   profile: ProfileInput
   phone: String
-  ssoLogin: String
-  auditor: Boolean = false
   isAdmin: Boolean
 }
 
@@ -72,7 +56,5 @@ type User {
   username: String!
   profile: Profile!
   roles: [Role!]!
-  auditor: Boolean
-  ssoLogin: String
   phone: String
 }
