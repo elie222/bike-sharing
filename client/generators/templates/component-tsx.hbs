@@ -1,0 +1,93 @@
+import * as React from 'react'
+{{#if usesGql}}
+import {
+{{#if query}}
+  useQuery,
+{{/if}}
+{{#if mutation}}
+  useMutation
+{{/if}}
+} from 'react-apollo-hooks'
+import gql from 'graphql-tag'
+{{/if}}
+{{#if usesGql}}
+import {
+{{#if query}}
+  Query,
+{{/if}}
+{{#if mutation}}
+  Mutation,
+  Mutation{{pascalCase mutation}}Args
+{{/if}}
+} from '../../../generated/graphql'
+{{/if}}
+
+{{#if query}}
+const GET_{{constantCase query}}_QUERY = gql`
+  query Get{{pascalCase query}} {
+    {{query}} {
+      _id
+      name
+    }
+  }
+`
+{{/if}}
+
+{{#if mutation}}
+const {{constantCase mutation}}_MUTATION = gql`
+  mutation Mutate{{pascalCase mutation}}($data: {{pascalCase mutation}}Input!) {
+    {{mutation}}(data: $data) {
+      _id
+      name
+    }
+  }
+`
+{{/if}}
+
+interface {{pascalCase name}}Props {
+{{#each props}}
+  {{name}}{{#if optional}}?{{/if}}: {{{type}}};
+{{/each}}
+}
+
+const {{pascalCase name}}: React.FunctionComponent<{{pascalCase name}}Props> = props => {
+{{#if query}}
+  const { data, error, loading } = useQuery<Query>(GET_{{constantCase query}}_QUERY)
+{{/if}}
+{{#if mutation}}
+  const {{camelCase mutation}} = useMutation<Mutation, Mutation{{pascalCase mutation}}Args>({{constantCase mutation}}_MUTATION)
+{{/if}}
+
+  return (<div>
+    <h2>{{pascalCase name}}</h2>
+
+    {{#if query}}
+    {loading ? (
+      'Loading...'
+    ) : !data ? (
+      'No data received from server'
+    ) : (
+      <div>{data.{{query}}.toString()}</div>
+    )}
+    {{/if}}
+
+    {{#if mutation}}
+    <button onClick={e => {
+      e.preventDefault()
+
+      {{mutation}}({
+        variables: {
+          data: {
+            name: 'some name',
+          },
+        },
+        // refetchQueries: [{ query: SOME_QUERY }],
+      })
+    }}>
+      Click me
+    </button>
+    {{/if}}
+  </div>)
+}
+
+export default {{pascalCase name}}

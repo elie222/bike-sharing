@@ -3,6 +3,7 @@ import { Platform } from 'react-native'
 import styled from '@emotion/native'
 import { Provider as PaperProvider, Button, Appbar } from 'react-native-paper'
 import Map from './src/components/Map/Map'
+import SignUp from './src/screens/auth/SignUp'
 
 const Container = styled.View`
   flex: 1;
@@ -44,6 +45,8 @@ export default function App() {
         <StyledView>
           <StyledText>Styled Text</StyledText>
         </StyledView>
+
+        <SignUp />
 
         <Button icon="add-a-photo" mode="contained" onPress={() => console.log('Pressed')}>
           Press me
