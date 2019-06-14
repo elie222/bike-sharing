@@ -1,0 +1,14 @@
+{
+  "type": "mongodb",
+  "database": "bike-sharing",
+  "synchronize": true,
+  "logging": false,
+  "entities": ["src/**/*Entity.ts"],
+  "migrations": ["src/migration/**/*.ts"],
+  "subscribers": ["src/subscriber/**/*.ts"],
+  "cli": {
+    "entitiesDir": "src/entity",
+    "migrationsDir": "src/migration",
+    "subscribersDir": "src/subscriber"
+  }
+}

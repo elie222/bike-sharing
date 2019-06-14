@@ -1,0 +1,34 @@
+import { getMongoRepository, ObjectID, FindOneOptions, FindManyOptions } from 'typeorm'
+import { Service } from 'typedi'
+import {{pascalCase name}} from './{{pascalCase name}}Entity'
+import { toObjectId } from '../common/mongo'
+
+@Service()
+export class {{pascalCase name}}Service {
+  private repository = getMongoRepository({{pascalCase name}})
+
+  async findOne(_id: string) {
+    return this.repository.findOne(_id)
+  }
+
+  async findOneBySelector(selector?: FindOneOptions<{{pascalCase name}}> | Partial<{{pascalCase name}}>) {
+    return this.repository.findOne(selector)
+  }
+
+  async find(selector?: FindManyOptions<{{pascalCase name}}> | Partial<{{pascalCase name}}>) {
+    return this.repository.find(selector)
+  }
+
+  async update(_id: string | ObjectID, entity: Partial<{{pascalCase name}}>) {
+    return this.repository.findOneAndUpdate({ _id: toObjectId(_id) }, { $set: entity })
+  }
+
+  async create(entity: Partial<{{pascalCase name}}>) {
+    return this.repository.save(entity)
+  }
+
+  async remove(_id: string) {
+    let entityToRemove = await this.repository.findOne(_id)
+    await this.repository.remove(entityToRemove)
+  }
+}

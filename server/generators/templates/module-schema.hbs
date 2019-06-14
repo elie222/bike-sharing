@@ -1,0 +1,16 @@
+import { Field, ObjectType, ID } from 'type-graphql'
+
+@ObjectType()
+export default class {{pascalCase name}}Schema {
+  @Field(type => ID)
+  _id: string
+
+  @Field()
+  createdAt: Date
+
+  @Field({ nullable: true })
+  updatedAt?: Date
+
+  @Field()
+  name: string
+}

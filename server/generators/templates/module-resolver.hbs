@@ -1,0 +1,75 @@
+import { Service } from 'typedi'
+import { Arg, Resolver, Query, Mutation, InputType, Field, Ctx, Authorized } from 'type-graphql'
+import { Context } from '../common/context'
+import {{pascalCase name}} from './{{pascalCase name}}Entity'
+import { {{pascalCase name}}Service } from './{{pascalCase name}}Service'
+import { Role } from '../user/consts'
+
+@Service()
+@Resolver({{pascalCase name}})
+export default class {{pascalCase name}}Resolver {
+  constructor(private readonly service: {{pascalCase name}}Service) {}
+
+  @Query(returns => {{pascalCase name}}, { nullable: true })
+  async {{camelCase name}}(@Arg('_id') _id: string) {
+    const doc = await this.service.findOne(_id)
+
+    return doc
+  }
+
+  @Query(returns => [{{pascalCase name}}])
+  async {{camelCase name}}s() {
+    const all = await this.service.find()
+
+    return all
+  }
+
+  @Authorized(Role.Admin)
+  @Mutation(returns => {{pascalCase name}})
+  async create{{pascalCase name}}(
+    @Arg('data', type => Create{{pascalCase name}}Input) data: Create{{pascalCase name}}Input,
+    @Ctx() ctx: Context
+  ) {
+    const res = await this.service.create(data)
+
+    return res
+  }
+
+  @Authorized(Role.Admin)
+  @Mutation(returns => {{pascalCase name}})
+  async update{{pascalCase name}}(
+    @Arg('_id', type => String) _id: string,
+    @Arg('data', type => Update{{pascalCase name}}Input) data: Update{{pascalCase name}}Input,
+    @Ctx() ctx: Context
+  ) {
+    const res = await this.service.update(_id, data)
+
+    return this.service.findOne(_id)
+  }
+
+  @Authorized(Role.Admin)
+  @Mutation(returns => Boolean)
+  async delete{{pascalCase name}}(@Arg('_id', type => String) _id: string, @Ctx() ctx: Context) {
+    await this.service.remove(_id)
+
+    return true
+  }
+}
+
+@InputType()
+class Create{{pascalCase name}}Input implements Partial<{{pascalCase name}}> {
+  @Field()
+  name: string
+
+  @Field({ nullable: true })
+  icon?: string
+}
+
+@InputType()
+class Update{{pascalCase name}}Input implements Partial<{{pascalCase name}}> {
+  @Field()
+  name?: string
+
+  @Field({ nullable: true })
+  icon?: string
+}

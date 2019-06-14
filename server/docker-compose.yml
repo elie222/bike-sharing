@@ -1,0 +1,31 @@
+version: "2"
+services:
+  app:
+    restart: always
+    build: .
+    ports:
+      - "80:4000"
+    links:
+      - mongo
+    environment:
+      - NODE_ENV=production
+      - TYPEORM_CONNECTION=mongodb
+      - TYPEORM_HOST=mongo
+      - TYPEORM_DATABASE=bike-sharing
+      - TYPEORM_SYNCHRONIZE=true
+      - TYPEORM_LOGGING=false
+      - TYPEORM_ENTITIES=src/**/*Entity.ts
+      - TYPEORM_SUBSCRIBERS=src/subscriber/**/*.ts
+      - TYPEORM_MIGRATIONS=src/migration/**/*.ts
+      - TYPEORM_ENTITIES_DIR=src/entity
+      - TYPEORM_MIGRATIONS_DIR=src/migration
+      - TYPEORM_SUBSCRIBERS_DIR=src/subscriber
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - data-volume:/data/db
+volumes:
+  data-volume:

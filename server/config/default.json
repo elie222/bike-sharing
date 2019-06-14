@@ -1,0 +1,7 @@
+{
+  "PORT": 4000,
+  "TYPEORM_HOST": "localhost",
+  "TYPEORM_DATABASE": "bike-sharing",
+  "ACCOUNTS_SECRET": "someReallyBadSecret",
+  "ENABLE_GRAPHQL_PLAYGROUND": true
+}
