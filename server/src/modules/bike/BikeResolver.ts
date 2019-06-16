@@ -1,9 +1,27 @@
 import { Service } from 'typedi'
-import { Arg, Resolver, Query, Mutation, InputType, Field, Ctx, Authorized } from 'type-graphql'
+import { Arg, Resolver, Query, Mutation, InputType, Field, Ctx, Authorized, ID } from 'type-graphql'
 import { Context } from '../common/context'
 import Bike from './BikeEntity'
 import { BikeService } from './BikeService'
 import { Role } from '../user/consts'
+
+@InputType()
+class CreateBikeInput implements Partial<Bike> {
+  @Field()
+  name: string
+
+  @Field({ nullable: true })
+  icon?: string
+}
+
+@InputType()
+class UpdateBikeInput implements Partial<Bike> {
+  @Field()
+  name?: string
+
+  @Field({ nullable: true })
+  icon?: string
+}
 
 @Service()
 @Resolver(Bike)
@@ -11,14 +29,14 @@ export default class BikeResolver {
   constructor(private readonly service: BikeService) {}
 
   @Query(returns => Bike, { nullable: true })
-  async bike(@Arg('_id') _id: string) {
+  async Bike(@Arg('_id', type => ID) _id: string) {
     const doc = await this.service.findOne(_id)
 
     return doc
   }
 
   @Query(returns => [Bike])
-  async bikes() {
+  async allBikes() {
     const all = await this.service.find()
 
     return all
@@ -54,22 +72,4 @@ export default class BikeResolver {
 
     return true
   }
-}
-
-@InputType()
-class CreateBikeInput implements Partial<Bike> {
-  @Field()
-  name: string
-
-  @Field({ nullable: true })
-  icon?: string
-}
-
-@InputType()
-class UpdateBikeInput implements Partial<Bike> {
-  @Field()
-  name?: string
-
-  @Field({ nullable: true })
-  icon?: string
 }

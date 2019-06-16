@@ -17,6 +17,7 @@ import {
 import { authChecker } from './modules/user/authChecker'
 import { setUpAccounts, userTypeDefs } from './modules/user/accounts'
 import { MongoConnectionOptions } from 'typeorm/driver/mongodb/MongoConnectionOptions'
+import BikeResolver from './modules/bike/BikeResolver'
 
 createConnection(
   process.env.NODE_ENV === 'production'
@@ -49,7 +50,7 @@ createConnection(
 
     const mongooseConnection = await mongoose.connect(mongoUrl)
 
-    const typeGraphqlResolvers = [UserResolver]
+    const typeGraphqlResolvers = [UserResolver, BikeResolver]
 
     const typeGraphqlSchema = await buildSchema({
       resolvers: typeGraphqlResolvers,

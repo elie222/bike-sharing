@@ -11,6 +11,11 @@ type Bike {
   icon: String
 }
 
+input CreateBikeInput {
+  name: String!
+  icon: String
+}
+
 """
 The javascript `Date` as string. Type represents date and time as the ISO Date string.
 """
@@ -18,6 +23,9 @@ scalar DateTime
 
 type Mutation {
   updateUser(user: UpdateUserInput!, userId: String!): User!
+  createBike(data: CreateBikeInput!): Bike!
+  updateBike(data: UpdateBikeInput!, _id: String!): Bike!
+  deleteBike(_id: String!): Boolean!
 }
 
 type Profile {
@@ -32,12 +40,19 @@ input ProfileInput {
 
 type Query {
   users: [User!]!
+  Bike(_id: ID!): Bike
+  allBikes: [Bike!]!
 }
 
 enum Role {
   SuperUser
   Admin
   ReadOnly
+}
+
+input UpdateBikeInput {
+  name: String!
+  icon: String
 }
 
 input UpdateUserInput {
