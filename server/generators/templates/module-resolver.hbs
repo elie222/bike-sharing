@@ -5,6 +5,24 @@ import {{pascalCase name}} from './{{pascalCase name}}Entity'
 import { {{pascalCase name}}Service } from './{{pascalCase name}}Service'
 import { Role } from '../user/consts'
 
+@InputType()
+class Create{{pascalCase name}}Input implements Partial<{{pascalCase name}}> {
+  @Field()
+  name: string
+
+  @Field({ nullable: true })
+  icon?: string
+}
+
+@InputType()
+class Update{{pascalCase name}}Input implements Partial<{{pascalCase name}}> {
+  @Field()
+  name?: string
+
+  @Field({ nullable: true })
+  icon?: string
+}
+
 @Service()
 @Resolver({{pascalCase name}})
 export default class {{pascalCase name}}Resolver {
@@ -54,22 +72,4 @@ export default class {{pascalCase name}}Resolver {
 
     return true
   }
-}
-
-@InputType()
-class Create{{pascalCase name}}Input implements Partial<{{pascalCase name}}> {
-  @Field()
-  name: string
-
-  @Field({ nullable: true })
-  icon?: string
-}
-
-@InputType()
-class Update{{pascalCase name}}Input implements Partial<{{pascalCase name}}> {
-  @Field()
-  name?: string
-
-  @Field({ nullable: true })
-  icon?: string
 }
