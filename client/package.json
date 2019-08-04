@@ -11,7 +11,8 @@
     "generate": "plop --plopfile ./generators/plopfile.js",
     "gen:types": "graphql-codegen --config codegen.yml",
     "storybook": "start-storybook -p 9009 -s public",
-    "storybook:build": "build-storybook -s public"
+    "storybook:build": "build-storybook -s public",
+    "cypress": "cypress open"
   },
   "dependencies": {
     "@accounts/apollo-link": "0.15.0",
@@ -53,6 +54,7 @@
     "@types/storybook__react": "^4.0.1",
     "apollo-storybook-react": "^0.2.1",
     "babel-preset-expo": "^5.1.1",
+    "cypress": "^3.3.1",
     "flat": "^4.1.0",
     "husky": "^2.4.1",
     "plop": "^2.3.0",
