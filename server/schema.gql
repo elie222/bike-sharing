@@ -26,6 +26,7 @@ type Mutation {
   createBike(data: CreateBikeInput!): Bike!
   updateBike(data: UpdateBikeInput!, _id: String!): Bike!
   deleteBike(_id: String!): Boolean!
+  uploadBikePhoto(file: Upload!, bikeId: String!): Bike!
 }
 
 type Profile {
@@ -63,6 +64,9 @@ input UpdateUserInput {
   phone: String
   isAdmin: Boolean
 }
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
 
 type User {
   _id: ID!

@@ -3,5 +3,10 @@
   "TYPEORM_HOST": "localhost",
   "TYPEORM_DATABASE": "bike-sharing",
   "ACCOUNTS_SECRET": "someReallyBadSecret",
-  "ENABLE_GRAPHQL_PLAYGROUND": true
+  "ENABLE_GRAPHQL_PLAYGROUND": true,
+  "CLOUDINARY": {
+    "CLOUD_NAME": "",
+    "API_KEY": "",
+    "API_SECRET": ""
+  }
 }

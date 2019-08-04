@@ -4,6 +4,8 @@ import { Context } from '../common/context'
 import Bike from './BikeEntity'
 import { BikeService } from './BikeService'
 import { Role } from '../user/consts'
+import { GraphQLUpload } from 'graphql-upload'
+import { uploadImage } from '../common/cloudinary'
 
 @InputType()
 class CreateBikeInput implements Partial<Bike> {
@@ -21,6 +23,17 @@ class UpdateBikeInput implements Partial<Bike> {
 
   @Field({ nullable: true })
   icon?: string
+}
+
+export class FileInput {
+  @Field()
+  path: string
+
+  @Field()
+  filename: string
+
+  @Field()
+  mimetype: string
 }
 
 @Service()
@@ -71,5 +84,22 @@ export default class BikeResolver {
     await this.service.remove(_id)
 
     return true
+  }
+
+  @Mutation(returns => Bike)
+  async uploadBikePhoto(
+    @Arg('bikeId') bikeId: string,
+    @Arg('file', type => GraphQLUpload) file: FileInput,
+    @Ctx() ctx: Context
+  ) {
+    const { userId } = ctx
+    const uploadedFile = await file
+
+    console.log('uploadedFile', uploadedFile)
+
+    // TODO
+    // uploadImage(uploadImage)
+
+    return null
   }
 }
