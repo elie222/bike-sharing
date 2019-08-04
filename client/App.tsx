@@ -2,6 +2,8 @@ import React from 'react'
 import { Platform } from 'react-native'
 import styled from '@emotion/native'
 import { Provider as PaperProvider, Button, Appbar } from 'react-native-paper'
+import Camera from 'react-html5-camera-photo'
+import 'react-html5-camera-photo/build/css/index.css'
 import Map from './src/components/Map/Map'
 import SignUp from './src/screens/auth/SignUp'
 
@@ -19,6 +21,20 @@ const StyledView = styled.View`
 const StyledText = styled.Text`
   color: blue;
 `
+
+function PhotoCamera() {
+  if (Platform.OS === 'web') {
+    return (
+      <Camera
+        onTakePhoto={dataUri => {
+          console.log('dataUri', dataUri)
+        }}
+      />
+    )
+  }
+
+  return null
+}
 
 export default function App() {
   const MORE_ICON = Platform.OS === 'ios' ? 'more-horiz' : 'more-vert'
@@ -51,6 +67,8 @@ export default function App() {
         <Button icon="add-a-photo" mode="contained" onPress={() => console.log('Pressed')}>
           Press me
         </Button>
+
+        <PhotoCamera />
       </Container>
     </PaperProvider>
   )
