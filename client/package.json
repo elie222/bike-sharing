@@ -6,6 +6,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
+    "build:web": "expo build:web",
     "eject": "expo eject",
     "precommit": "pretty-quick --staged",
     "generate": "plop --plopfile ./generators/plopfile.js",
