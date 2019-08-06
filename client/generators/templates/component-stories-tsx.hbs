@@ -1,0 +1,23 @@
+import * as React from "react"
+import { storiesOf } from "@storybook/react"
+import { action } from "@storybook/addon-actions"
+import {{pascalCase name}} from "./{{pascalCase name}}"
+
+storiesOf("{{pascalCase name}}", module)
+  {{#if haveRequiredProps}}
+  .add("default", () => {
+    {{#each props}}
+    {{#if required}}
+    const {{name}}: {{{type}}} = null
+    {{/if}}
+    {{/each}}
+
+    return (
+      <{{pascalCase name}}{{#each props}}{{#if required}} {{name}}={{propsHelper name}}{{/if}}{{/each}} />
+    )
+  })
+  {{else}}
+  .add("default", () => (
+    <{{pascalCase name}} />
+  ))
+  {{/if}}
