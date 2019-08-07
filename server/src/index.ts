@@ -18,6 +18,7 @@ import { authChecker } from './modules/user/authChecker'
 import { setUpAccounts, userTypeDefs } from './modules/user/accounts'
 import { MongoConnectionOptions } from 'typeorm/driver/mongodb/MongoConnectionOptions'
 import BikeResolver from './modules/bike/BikeResolver'
+import bodyParser = require('body-parser')
 
 createConnection(
   process.env.NODE_ENV === 'production'
@@ -93,6 +94,7 @@ createConnection(
     })
 
     const app = express()
+    app.use(bodyParser.json({ limit: '10mb' }))
     server.applyMiddleware({ app })
 
     await new Promise((resolve, reject) => {

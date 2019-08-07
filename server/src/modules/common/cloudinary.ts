@@ -7,8 +7,29 @@ cloudinary.config({
   api_secret: CLOUDINARY_API_SECRET,
 })
 
-export function uploadImage(filename: string) {
-  return cloudinary.uploader.upload(filename, (error, result) => {
-    console.log(result, error)
+interface UploadResult {
+  public_id: string
+  version: number
+  signature: string
+  width: number
+  height: number
+  format: string
+  resource_type: string
+  created_at: string
+  tags: any[]
+  bytes: number
+  type: string
+  etag: string
+  placeholder: boolean
+  url: string
+  secure_url: string
+}
+
+export async function uploadImage(file: string): Promise<UploadResult> {
+  return new Promise((resolve, reject) => {
+    return cloudinary.uploader.upload(file, (error, result) => {
+      if (error) reject(error)
+      else resolve(result)
+    })
   })
 }

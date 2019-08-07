@@ -25,17 +25,6 @@ class UpdateBikeInput implements Partial<Bike> {
   icon?: string
 }
 
-export class FileInput {
-  @Field()
-  path: string
-
-  @Field()
-  filename: string
-
-  @Field()
-  mimetype: string
-}
-
 @Service()
 @Resolver(Bike)
 export default class BikeResolver {
@@ -86,20 +75,18 @@ export default class BikeResolver {
     return true
   }
 
-  @Mutation(returns => Bike)
+  @Mutation(returns => String)
   async uploadBikePhoto(
     @Arg('bikeId') bikeId: string,
-    @Arg('file', type => GraphQLUpload) file: FileInput,
+    @Arg('file', type => GraphQLUpload) file: string,
     @Ctx() ctx: Context
-  ) {
+  ): Promise<string> {
     const { userId } = ctx
-    const uploadedFile = await file
 
-    console.log('uploadedFile', uploadedFile)
+    const result = await uploadImage(file)
 
-    // TODO
-    // uploadImage(uploadImage)
+    console.log('result', result)
 
-    return null
+    return result.url
   }
 }

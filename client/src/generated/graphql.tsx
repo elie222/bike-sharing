@@ -1,4 +1,6 @@
 import gql from 'graphql-tag'
+import * as ApolloReactCommon from '@apollo/react-common'
+import * as ApolloReactHooks from '@apollo/react-hooks'
 
 type Maybe<T> = T | null
 /** All built-in and custom scalars, mapped to their actual values */
@@ -82,7 +84,7 @@ export type Mutation = {
   createBike: Bike
   updateBike: Bike
   deleteBike: Scalars['Boolean']
-  uploadBikePhoto: Bike
+  uploadBikePhoto: Scalars['String']
 }
 
 export type MutationCreateUserArgs = {
@@ -244,3 +246,42 @@ export type UserInput = {
   email?: Maybe<Scalars['String']>
   username?: Maybe<Scalars['String']>
 }
+export type UploadBikePhotoMutationVariables = {
+  file: Scalars['Upload']
+  bikeId: Scalars['String']
+}
+
+export type UploadBikePhotoMutation = { __typename?: 'Mutation' } & Pick<
+  Mutation,
+  'uploadBikePhoto'
+>
+
+export const UploadBikePhotoDocument = gql`
+  mutation UploadBikePhoto($file: Upload!, $bikeId: String!) {
+    uploadBikePhoto(file: $file, bikeId: $bikeId)
+  }
+`
+export type UploadBikePhotoMutationFn = ApolloReactCommon.MutationFunction<
+  UploadBikePhotoMutation,
+  UploadBikePhotoMutationVariables
+>
+
+export function useUploadBikePhotoMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    UploadBikePhotoMutation,
+    UploadBikePhotoMutationVariables
+  >
+) {
+  return ApolloReactHooks.useMutation<UploadBikePhotoMutation, UploadBikePhotoMutationVariables>(
+    UploadBikePhotoDocument,
+    baseOptions
+  )
+}
+export type UploadBikePhotoMutationHookResult = ReturnType<typeof useUploadBikePhotoMutation>
+export type UploadBikePhotoMutationResult = ApolloReactCommon.MutationResult<
+  UploadBikePhotoMutation
+>
+export type UploadBikePhotoMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  UploadBikePhotoMutation,
+  UploadBikePhotoMutationVariables
+>

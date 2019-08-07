@@ -26,7 +26,7 @@ type Mutation {
   createBike(data: CreateBikeInput!): Bike!
   updateBike(data: UpdateBikeInput!, _id: String!): Bike!
   deleteBike(_id: String!): Boolean!
-  uploadBikePhoto(file: Upload!, bikeId: String!): Bike!
+  uploadBikePhoto(file: Upload!, bikeId: String!): String!
 }
 
 type Profile {
