@@ -1,55 +1,38 @@
 import 'reflect-metadata'
-import { createConnection, getConnectionOptions } from 'typeorm'
+import { createConnection } from 'typeorm'
 import * as mongoose from 'mongoose'
-import * as fs from 'fs'
 import { ApolloServer, makeExecutableSchema } from 'apollo-server-express'
 import * as express from 'express'
+import * as bodyParser from 'body-parser'
 import { buildSchema } from 'type-graphql'
 import { Container } from 'typedi'
 import { mergeResolvers, mergeTypeDefs, mergeSchemas } from 'graphql-toolkit'
 import UserResolver from './modules/user/UserResolver'
-import {
-  PORT,
-  TYPEORM_HOST,
-  TYPEORM_DATABASE,
-  ENABLE_GRAPHQL_PLAYGROUND,
-} from './modules/common/consts'
+import { PORT, MONGO, ENABLE_GRAPHQL_PLAYGROUND } from './modules/common/consts'
 import { authChecker } from './modules/user/authChecker'
 import { setUpAccounts, userTypeDefs } from './modules/user/accounts'
-import { MongoConnectionOptions } from 'typeorm/driver/mongodb/MongoConnectionOptions'
 import BikeResolver from './modules/bike/BikeResolver'
-import bodyParser = require('body-parser')
 
-createConnection(
-  process.env.NODE_ENV === 'production'
-    ? undefined
-    : {
-        type: 'mongodb',
-        host: TYPEORM_HOST,
-        database: TYPEORM_DATABASE,
-        synchronize: true,
-        logging: false,
-        entities: ['src/**/*Entity.ts'],
-        migrations: ['src/migration/**/*.ts'],
-        subscribers: ['src/subscriber/**/*.ts'],
-        cli: {
-          entitiesDir: 'src/entity',
-          migrationsDir: 'src/migration',
-          subscribersDir: 'src/subscriber',
-        },
-      }
-)
+createConnection({
+  type: 'mongodb',
+  url: MONGO.URL,
+  ssl: MONGO.SSL,
+  authSource: MONGO.AUTH_SOURCE,
+  replicaSet: MONGO.REPLICA_SET,
+  useNewUrlParser: true,
+  synchronize: true,
+  logging: false,
+  entities: ['src/**/*Entity.ts'],
+  migrations: ['src/migration/**/*.ts'],
+  subscribers: ['src/subscriber/**/*.ts'],
+  cli: {
+    entitiesDir: 'src/entity',
+    migrationsDir: 'src/migration',
+    subscribersDir: 'src/subscriber',
+  },
+})
   .then(async connection => {
-    const connectionOptions = (await getConnectionOptions()) as MongoConnectionOptions
-    // console.log('connectionOptions', connectionOptions)
-
-    const mongoUrl = `mongodb://${TYPEORM_HOST}:${connectionOptions.port || 27017}/${
-      connectionOptions.database
-    }`
-
-    console.log('mongoUrl', mongoUrl)
-
-    const mongooseConnection = await mongoose.connect(mongoUrl)
+    const mongooseConnection = await mongoose.connect(MONGO.URL, { useNewUrlParser: true })
 
     const typeGraphqlResolvers = [UserResolver, BikeResolver]
 
@@ -96,20 +79,6 @@ createConnection(
     const app = express()
     app.use(bodyParser.json({ limit: '10mb' }))
     server.applyMiddleware({ app })
-
-    await new Promise((resolve, reject) => {
-      const uploadFilesPath = `${__dirname}/../files`
-      fs.access(uploadFilesPath, err => {
-        if (err) {
-          fs.mkdir(uploadFilesPath, err => {
-            if (err) return reject(err)
-            return resolve()
-          })
-        } else {
-          resolve()
-        }
-      })
-    })
 
     await app.listen({ port: PORT })
 

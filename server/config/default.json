@@ -8,5 +8,8 @@
     "CLOUD_NAME": "",
     "API_KEY": "",
     "API_SECRET": ""
+  },
+  "MONGO": {
+    "URL": "mongodb://localhost:27017/bike-sharing"
   }
 }
