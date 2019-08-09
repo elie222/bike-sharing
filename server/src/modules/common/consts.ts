@@ -3,7 +3,7 @@ import * as config from 'config'
 export const PORT: number = config.get('PORT')
 export const MONGO: {
   URL: string
-  SSL?: boolean
+  SSL?: string
   AUTH_SOURCE?: string
   REPLICA_SET?: string
 } = config.get('MONGO')

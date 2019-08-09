@@ -1,5 +1,6 @@
 import 'reflect-metadata'
 import { createConnection } from 'typeorm'
+import { MongoConnectionOptions } from 'typeorm/driver/mongodb/MongoConnectionOptions'
 import * as mongoose from 'mongoose'
 import { ApolloServer, makeExecutableSchema } from 'apollo-server-express'
 import * as express from 'express'
@@ -13,10 +14,10 @@ import { authChecker } from './modules/user/authChecker'
 import { setUpAccounts, userTypeDefs } from './modules/user/accounts'
 import BikeResolver from './modules/bike/BikeResolver'
 
-createConnection({
+const connectionOptions: MongoConnectionOptions = {
   type: 'mongodb',
   url: MONGO.URL,
-  ssl: MONGO.SSL,
+  ssl: MONGO.SSL === 'true',
   authSource: MONGO.AUTH_SOURCE,
   replicaSet: MONGO.REPLICA_SET,
   useNewUrlParser: true,
@@ -30,7 +31,9 @@ createConnection({
     migrationsDir: 'src/migration',
     subscribersDir: 'src/subscriber',
   },
-})
+}
+
+createConnection(connectionOptions)
   .then(async connection => {
     const mongooseConnection = await mongoose.connect(MONGO.URL, { useNewUrlParser: true })
 
@@ -44,7 +47,7 @@ createConnection({
       authChecker,
     })
 
-    const { accountsGraphQL, accountsServer } = setUpAccounts(mongooseConnection.connection)
+    const { accountsGraphQL } = setUpAccounts(mongooseConnection.connection)
 
     const schema = makeExecutableSchema({
       typeDefs: mergeTypeDefs([userTypeDefs, accountsGraphQL.typeDefs]),
