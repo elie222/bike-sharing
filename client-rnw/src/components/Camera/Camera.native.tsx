@@ -8,6 +8,7 @@ interface CameraProps {}
 const PhotoCamera: React.FC<CameraProps> = props => {
   const [hasCameraPermission, setHasCameraPermission] = React.useState(false)
   const [cameraType, setCameraType] = React.useState(Camera.Constants.Type.back)
+  const cameraRef = React.useRef<Camera>(null)
 
   React.useEffect(() => {
     const askForPermission = async () => {
@@ -27,7 +28,7 @@ const PhotoCamera: React.FC<CameraProps> = props => {
   } else {
     return (
       <View style={{ flex: 1 }}>
-        <Camera style={{ flex: 1 }} type={cameraType}>
+        <Camera style={{ flex: 1 }} type={cameraType} ref={cameraRef}>
           <View
             style={{
               flex: 1,
@@ -50,6 +51,22 @@ const PhotoCamera: React.FC<CameraProps> = props => {
               }}
             >
               <Text style={{ fontSize: 18, marginBottom: 10, color: 'white' }}> Flip </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                flex: 0.9,
+                alignSelf: 'flex-end',
+                alignItems: 'center',
+              }}
+              onPress={async () => {
+                if (cameraRef.current) {
+                  const photo = await cameraRef.current.takePictureAsync()
+
+                  console.log('photo', photo)
+                }
+              }}
+            >
+              <Text style={{ fontSize: 18, marginBottom: 10, color: 'white' }}> Take Photo </Text>
             </TouchableOpacity>
           </View>
         </Camera>
