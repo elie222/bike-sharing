@@ -10,6 +10,8 @@ export type Scalars = {
   Float: number
   /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
   DateTime: any
+  /** The `Upload` scalar type represents a file upload. */
+  Upload: any
 }
 
 export type AuthenticateParamsInput = {
@@ -25,6 +27,11 @@ export type Bike = {
   _id: Scalars['ID']
   createdAt: Scalars['DateTime']
   updatedAt?: Maybe<Scalars['DateTime']>
+  name: Scalars['String']
+  icon?: Maybe<Scalars['String']>
+}
+
+export type CreateBikeInput = {
   name: Scalars['String']
   icon?: Maybe<Scalars['String']>
 }
@@ -72,6 +79,10 @@ export type Mutation = {
   logout?: Maybe<Scalars['Boolean']>
   authenticate?: Maybe<LoginResult>
   updateUser: User
+  createBike: Bike
+  updateBike: Bike
+  deleteBike: Scalars['Boolean']
+  uploadBikePhoto: Scalars['String']
 }
 
 export type MutationCreateUserArgs = {
@@ -129,6 +140,24 @@ export type MutationUpdateUserArgs = {
   userId: Scalars['String']
 }
 
+export type MutationCreateBikeArgs = {
+  data: CreateBikeInput
+}
+
+export type MutationUpdateBikeArgs = {
+  data: UpdateBikeInput
+  _id: Scalars['String']
+}
+
+export type MutationDeleteBikeArgs = {
+  _id: Scalars['String']
+}
+
+export type MutationUploadBikePhotoArgs = {
+  file: Scalars['Upload']
+  bikeId: Scalars['String']
+}
+
 export type Profile = {
   firstName: Scalars['String']
   lastName: Scalars['String']
@@ -143,6 +172,12 @@ export type Query = {
   twoFactorSecret?: Maybe<TwoFactorSecretKey>
   getUser?: Maybe<User>
   users: Array<User>
+  Bike?: Maybe<Bike>
+  allBikes: Array<Bike>
+}
+
+export type QueryBikeArgs = {
+  _id: Scalars['ID']
 }
 
 export enum Role {
@@ -176,6 +211,11 @@ export type TwoFactorSecretKeyInput = {
   qr_code_base32?: Maybe<Scalars['String']>
   google_auth_qr?: Maybe<Scalars['String']>
   otpauth_url?: Maybe<Scalars['String']>
+}
+
+export type UpdateBikeInput = {
+  name: Scalars['String']
+  icon?: Maybe<Scalars['String']>
 }
 
 export type UpdateUserInput = {
