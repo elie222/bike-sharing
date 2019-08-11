@@ -26,17 +26,18 @@
     "apollo-cache-inmemory": "^1.6.2",
     "apollo-client": "^2.6.3",
     "apollo-upload-client": "^11.0.0",
-    "expo": "^33.0.0",
+    "expo": "^34.0.3",
     "google-maps-react": "^2.0.2",
     "graphql": "^14.3.1",
     "lodash": "^4.17.15",
     "react": "16.8.3",
     "react-dom": "^16.8.6",
     "react-html5-camera-photo": "^1.4.3",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-33.0.0.tar.gz",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-34.0.0.tar.gz",
     "react-native-maps": "~0.24.0",
     "react-native-paper": "^2.16.0",
-    "react-native-web": "^0.11.4"
+    "react-native-web": "^0.11.4",
+    "react-navigation": "^3.11.1"
   },
   "devDependencies": {
     "@expo/webpack-config": "^0.5.10",
