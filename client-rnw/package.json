@@ -23,6 +23,7 @@
     "@apollo/react-hooks": "^3.0.0",
     "@emotion/core": "^10.0.10",
     "@emotion/native": "^10.0.11",
+    "@eva-design/eva": "^1.0.1",
     "apollo-cache-inmemory": "^1.6.2",
     "apollo-client": "^2.6.3",
     "apollo-upload-client": "^11.0.0",
@@ -35,7 +36,7 @@
     "react-html5-camera-photo": "^1.4.3",
     "react-native": "https://github.com/expo/react-native/archive/sdk-34.0.0.tar.gz",
     "react-native-maps": "~0.24.0",
-    "react-native-paper": "^2.16.0",
+    "react-native-ui-kitten": "^4.1.0",
     "react-native-web": "^0.11.4",
     "react-navigation": "^3.11.1"
   },

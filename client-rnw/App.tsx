@@ -1,60 +1,73 @@
 import React from 'react'
-import { Platform } from 'react-native'
+import { Platform, ListRenderItemInfo, StatusBar, View } from 'react-native'
 import styled from '@emotion/native'
-import { Provider as PaperProvider, Button, Appbar } from 'react-native-paper'
+import { mapping, light as lightTheme } from '@eva-design/eva'
+import {
+  ApplicationProvider,
+  Layout,
+  Text,
+  Button,
+  TopNavigation,
+  ListItem,
+  List,
+  BottomNavigation,
+  BottomNavigationTab,
+} from 'react-native-ui-kitten'
+import Constants from 'expo-constants'
 import Map from './src/components/Map/Map'
-import Camera from './src/components/Camera/Camera'
-import SignUp from './src/screens/auth/SignUp'
+// import Camera from './src/components/Camera/Camera'
+// import SignUp from './src/screens/auth/SignUp'
 
-const Container = styled.View`
+const Container = styled(Layout)`
   flex: 1;
-  background-color: #fff;
+  background-color: red;
   align-items: center;
-  justify-content: center;
-`
-
-const StyledView = styled.View`
-  background-color: papayawhip;
-`
-
-const StyledText = styled.Text`
-  color: blue;
 `
 
 export default function App() {
-  const MORE_ICON = Platform.OS === 'ios' ? 'more-horiz' : 'more-vert'
+  const [selectedTabIndex, setSelectedTabIndex] = React.useState(0)
+
+  const data: string[] = ['Item 1', 'Item 2', 'Item 3']
 
   return (
-    <PaperProvider>
-      <Appbar.Header>
-        <Appbar.BackAction onPress={() => console.log('back')} />
-        <Appbar.Content title="Title" subtitle={'Subtitle'} />
-        <Appbar.Action icon="search" onPress={() => {}} />
-        <Appbar.Action icon={MORE_ICON} onPress={() => {}} />
-      </Appbar.Header>
-
-      <Map />
-
-      <Appbar>
-        <Appbar.Action icon="archive" onPress={() => console.log('Pressed archive')} />
-        <Appbar.Action icon="mail" onPress={() => console.log('Pressed mail')} />
-        <Appbar.Action icon="label" onPress={() => console.log('Pressed label')} />
-        <Appbar.Action icon="delete" onPress={() => console.log('Pressed delete')} />
-      </Appbar>
-
+    <ApplicationProvider mapping={mapping} theme={lightTheme}>
+      <View
+        style={{
+          height: Platform.select({
+            ios: Constants.statusBarHeight,
+            android: 0,
+          }),
+        }}
+      >
+        <StatusBar barStyle={'default'} />
+      </View>
       <Container>
-        <StyledView>
-          <StyledText>Styled Text</StyledText>
-        </StyledView>
+        <TopNavigation title="Title" subtitle="Subtitle" />
+        <View style={{ paddingBottom: 30 }}>
+          <Text style={{ marginVertical: 16 }} category="h4">
+            Welcome to UI Kitten
+          </Text>
+          <Button>BUTTON</Button>
+        </View>
 
-        <SignUp />
+        <View style={{ height: 400, alignSelf: 'stretch' }}>
+          <Map />
+        </View>
 
-        <Button icon="add-a-photo" mode="contained" onPress={() => console.log('Pressed')}>
-          Press me
-        </Button>
+        <List
+          style={{ alignSelf: 'stretch' }}
+          data={data}
+          renderItem={(info: ListRenderItemInfo<string>) => (
+            <ListItem title={info.item} description="Description" onPress={console.log} />
+          )}
+        />
 
-        <Camera />
+        <BottomNavigation selectedIndex={selectedTabIndex} onSelect={setSelectedTabIndex}>
+          <BottomNavigationTab title="Tab 1" />
+          <BottomNavigationTab title="Tab 2" />
+          <BottomNavigationTab title="Tab 3" />
+        </BottomNavigation>
       </Container>
-    </PaperProvider>
+    </ApplicationProvider>
   )
 }
