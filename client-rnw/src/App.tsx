@@ -1,5 +1,7 @@
 import React from 'react'
 import { Platform, ListRenderItemInfo, StatusBar, View, ScrollView } from 'react-native'
+import { registerRootComponent } from 'expo'
+import { ApolloProvider } from '@apollo/react-hooks'
 import styled from '@emotion/native'
 import { mapping, light as lightTheme } from '@eva-design/eva'
 import {
@@ -14,9 +16,19 @@ import {
   BottomNavigationTab,
 } from 'react-native-ui-kitten'
 import Constants from 'expo-constants'
-import Map from './src/components/Map/Map'
-import Camera from './src/components/Camera/Camera'
+import { client } from './utils/apollo'
+import Map from './components/Map/Map'
+import Camera from './components/Camera/Camera'
+import gql from 'graphql-tag'
+import { useUploadBikePhotoMutation } from './generated/graphql'
 // import SignUp from './src/screens/auth/SignUp'
+
+// eslint-disable-next-line
+const UPLOAD_PHOTO_MUTATION = gql`
+  mutation UploadBikePhoto($file: Upload!, $bikeId: String!) {
+    uploadBikePhoto(file: $file, bikeId: $bikeId)
+  }
+`
 
 const Container = styled(Layout)`
   flex: 1;
@@ -24,13 +36,14 @@ const Container = styled(Layout)`
   align-items: center;
 `
 
-export default function App() {
+const AppInner: React.FC = () => {
   const [selectedTabIndex, setSelectedTabIndex] = React.useState(0)
+  const [uploadBikePhoto] = useUploadBikePhotoMutation()
 
   const data: string[] = ['Item 1', 'Item 2', 'Item 3']
 
   return (
-    <ApplicationProvider mapping={mapping} theme={lightTheme}>
+    <>
       <View
         style={{
           height: Platform.select({
@@ -52,7 +65,22 @@ export default function App() {
           </View>
 
           <View style={{ height: 400, alignSelf: 'stretch' }}>
-            <Camera />
+            <Camera
+              onTakePhoto={async photo => {
+                try {
+                  const result = await uploadBikePhoto({
+                    variables: {
+                      bikeId: '',
+                      file: photo.base64,
+                    },
+                  })
+
+                  console.log('result', result)
+                } catch (error) {
+                  console.error(error)
+                }
+              }}
+            />
           </View>
 
           <View style={{ height: 400, alignSelf: 'stretch' }}>
@@ -74,6 +102,18 @@ export default function App() {
           <BottomNavigationTab title="Tab 3" />
         </BottomNavigation>
       </Container>
-    </ApplicationProvider>
+    </>
   )
 }
+
+const App: React.FC = () => {
+  return (
+    <ApolloProvider client={client}>
+      <ApplicationProvider mapping={mapping} theme={lightTheme}>
+        <AppInner />
+      </ApplicationProvider>
+    </ApolloProvider>
+  )
+}
+
+export default registerRootComponent(App)

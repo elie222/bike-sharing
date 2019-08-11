@@ -2,8 +2,7 @@ import React from 'react'
 import * as Permissions from 'expo-permissions'
 import { Camera } from 'expo-camera'
 import { View, Text, TouchableOpacity } from 'react-native'
-
-interface CameraProps {}
+import { CameraProps } from './types'
 
 const PhotoCamera: React.FC<CameraProps> = props => {
   const [hasCameraPermission, setHasCameraPermission] = React.useState(false)
@@ -60,7 +59,9 @@ const PhotoCamera: React.FC<CameraProps> = props => {
               }}
               onPress={async () => {
                 if (cameraRef.current) {
-                  const photo = await cameraRef.current.takePictureAsync()
+                  const photo = await cameraRef.current.takePictureAsync({ base64: true })
+
+                  props.onTakePhoto(photo)
 
                   console.log('photo', photo)
                 }

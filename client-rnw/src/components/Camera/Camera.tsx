@@ -1,6 +1,5 @@
 import React from 'react'
-
-interface CameraProps {}
+import { CameraProps } from './types'
 
 const Camera: React.FC<CameraProps> = props => {
   return <div>Camera Default</div>
