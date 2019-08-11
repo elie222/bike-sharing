@@ -21,3 +21,27 @@ Run:
 ```sh
 yarn watch
 ```
+
+### Deploy Server
+
+- Create a server on something like DigitalOcean or AWS.
+- Git clone the project to the server
+- Install Docker and Docker Compose
+- Add production.json settings file in config folder
+
+Then run:
+
+```sh
+cd bike-sharing/server/
+docker-compose up
+docker-compose build -d
+```
+
+To update the server:
+
+```sh
+cd bike-sharing/server/
+git pull
+docker-compose up
+docker-compose build -d
+```
