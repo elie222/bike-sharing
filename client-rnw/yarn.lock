@@ -5977,6 +5977,14 @@ expo-asset@~6.0.0:
     path-browserify "^1.0.0"
     url-parse "^1.4.4"
 
+expo-camera@~6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/expo-camera/-/expo-camera-6.0.0.tgz#74db78874f87de7adcd63db0e96591c331fefd28"
+  integrity sha512-/yI/w2wumKVzRfiyTj84+WkRjO2srJyApjN2yFQwIIo+SncOUp5268ao2UKu4zsl3xdj6WQ7ZJeThOX/C75WRQ==
+  dependencies:
+    lodash "^4.6.0"
+    prop-types "^15.6.0"
+
 expo-constants@~6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-6.0.0.tgz#ff4598985ba006e24949be3f05be7429e5bedacf"

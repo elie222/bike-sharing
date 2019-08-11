@@ -1,5 +1,5 @@
 import React from 'react'
-import { Platform, ListRenderItemInfo, StatusBar, View } from 'react-native'
+import { Platform, ListRenderItemInfo, StatusBar, View, ScrollView } from 'react-native'
 import styled from '@emotion/native'
 import { mapping, light as lightTheme } from '@eva-design/eva'
 import {
@@ -15,7 +15,7 @@ import {
 } from 'react-native-ui-kitten'
 import Constants from 'expo-constants'
 import Map from './src/components/Map/Map'
-// import Camera from './src/components/Camera/Camera'
+import Camera from './src/components/Camera/Camera'
 // import SignUp from './src/screens/auth/SignUp'
 
 const Container = styled(Layout)`
@@ -43,24 +43,30 @@ export default function App() {
       </View>
       <Container>
         <TopNavigation title="Title" subtitle="Subtitle" />
-        <View style={{ paddingBottom: 30 }}>
-          <Text style={{ marginVertical: 16 }} category="h4">
-            Welcome to UI Kitten
-          </Text>
-          <Button>BUTTON</Button>
-        </View>
+        <ScrollView style={{ flex: 1, alignSelf: 'stretch' }}>
+          <View style={{ paddingBottom: 30 }}>
+            <Text style={{ marginVertical: 16 }} category="h4">
+              Welcome to my demo app
+            </Text>
+            <Button onPress={() => 'onclicktopbutton'}>BUTTON</Button>
+          </View>
 
-        <View style={{ height: 400, alignSelf: 'stretch' }}>
-          <Map />
-        </View>
+          <View style={{ height: 400, alignSelf: 'stretch' }}>
+            <Camera />
+          </View>
 
-        <List
-          style={{ alignSelf: 'stretch' }}
-          data={data}
-          renderItem={(info: ListRenderItemInfo<string>) => (
-            <ListItem title={info.item} description="Description" onPress={console.log} />
-          )}
-        />
+          <View style={{ height: 400, alignSelf: 'stretch' }}>
+            <Map />
+          </View>
+
+          <List
+            style={{ height: 400, alignSelf: 'stretch' }}
+            data={data}
+            renderItem={(info: ListRenderItemInfo<string>) => (
+              <ListItem title={info.item} description="Description" onPress={console.log} />
+            )}
+          />
+        </ScrollView>
 
         <BottomNavigation selectedIndex={selectedTabIndex} onSelect={setSelectedTabIndex}>
           <BottomNavigationTab title="Tab 1" />
