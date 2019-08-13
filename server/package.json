@@ -45,8 +45,6 @@
     "node-fetch": "^2.6.0",
     "prettier": "^1.16.4",
     "pretty-quick": "^1.10.0",
-    "react-popper-tooltip": "^2.8.1",
-    "react-transition-group": "^3.0.0",
     "reflect-metadata": "^0.1.10",
     "type-graphql": "^0.17.0",
     "typedi": "^0.8.0",
