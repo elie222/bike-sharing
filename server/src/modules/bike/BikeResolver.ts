@@ -4,8 +4,9 @@ import { Context } from '../common/context'
 import Bike from './BikeEntity'
 import { BikeService } from './BikeService'
 import { Role } from '../user/consts'
-import { GraphQLUpload } from 'graphql-upload'
-import { uploadImage } from '../common/cloudinary'
+import { GraphQLUpload, FileUpload } from 'graphql-upload'
+import { uploadImageStream } from '../common/cloudinary'
+import { Stream } from 'stream'
 
 @InputType()
 class CreateBikeInput implements Partial<Bike> {
@@ -78,12 +79,15 @@ export default class BikeResolver {
   @Mutation(returns => String)
   async uploadBikePhoto(
     @Arg('bikeId') bikeId: string,
-    @Arg('file', type => GraphQLUpload) file: string,
+    @Arg('file', type => GraphQLUpload) file: FileUpload,
     @Ctx() ctx: Context
   ): Promise<string> {
     const { userId } = ctx
 
-    const result = await uploadImage(file)
+    const res = await file
+    const { createReadStream, filename, mimetype } = res
+
+    const result = await uploadImageStream(createReadStream())
 
     console.log('result', result)
 

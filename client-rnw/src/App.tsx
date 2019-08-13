@@ -16,6 +16,7 @@ import {
   BottomNavigationTab,
 } from 'react-native-ui-kitten'
 import Constants from 'expo-constants'
+import { ReactNativeFile } from 'apollo-upload-client'
 import { client } from './utils/apollo'
 import Map from './components/Map/Map'
 import Camera from './components/Camera/Camera'
@@ -68,10 +69,16 @@ const AppInner: React.FC = () => {
             <Camera
               onTakePhoto={async photo => {
                 try {
+                  const file = new ReactNativeFile({
+                    uri: photo.uri,
+                    type: 'image/png',
+                    name: 'i-am-a-name',
+                  })
+
                   const result = await uploadBikePhoto({
                     variables: {
-                      bikeId: '',
-                      file: photo.base64,
+                      bikeId: 'x123',
+                      file,
                     },
                   })
 

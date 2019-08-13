@@ -59,11 +59,9 @@ const PhotoCamera: React.FC<CameraProps> = props => {
               }}
               onPress={async () => {
                 if (cameraRef.current) {
-                  const photo = await cameraRef.current.takePictureAsync({ base64: true })
+                  const photo = await cameraRef.current.takePictureAsync()
 
                   props.onTakePhoto(photo)
-
-                  console.log('photo', photo)
                 }
               }}
             >
