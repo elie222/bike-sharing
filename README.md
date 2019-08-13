@@ -33,8 +33,8 @@ Then run:
 
 ```sh
 cd bike-sharing/server/
-docker-compose up
-docker-compose build -d
+docker-compose build
+docker-compose up -d
 ```
 
 To update the server:
@@ -42,6 +42,6 @@ To update the server:
 ```sh
 cd bike-sharing/server/
 git pull
-docker-compose up
-docker-compose build -d
+docker-compose build
+docker-compose up -d
 ```
