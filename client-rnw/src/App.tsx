@@ -1,5 +1,6 @@
 import React from 'react'
 import { Platform, ListRenderItemInfo, StatusBar, View, ScrollView } from 'react-native'
+import { createStackNavigator, createAppContainer } from 'react-navigation'
 import { registerRootComponent } from 'expo'
 import { ApolloProvider } from '@apollo/react-hooks'
 import styled from '@emotion/native'
@@ -22,6 +23,7 @@ import Map from './components/Map/Map'
 import Camera from './components/Camera/Camera'
 import gql from 'graphql-tag'
 import { useUploadBikePhotoMutation } from './generated/graphql'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 // import SignUp from './src/screens/auth/SignUp'
 
 // eslint-disable-next-line
@@ -37,7 +39,7 @@ const Container = styled(Layout)`
   align-items: center;
 `
 
-const AppInner: React.FC = () => {
+const AppInner: React.FC = props => {
   const [selectedTabIndex, setSelectedTabIndex] = React.useState(0)
   const [uploadBikePhoto] = useUploadBikePhotoMutation()
 
@@ -45,24 +47,14 @@ const AppInner: React.FC = () => {
 
   return (
     <>
-      <View
-        style={{
-          height: Platform.select({
-            ios: Constants.statusBarHeight,
-            android: 0,
-          }),
-        }}
-      >
-        <StatusBar barStyle={'default'} />
-      </View>
       <Container>
         <TopNavigation title="Title" subtitle="Subtitle" />
         <ScrollView style={{ flex: 1, alignSelf: 'stretch' }}>
           <View style={{ paddingBottom: 30 }}>
-            <Text style={{ marginVertical: 16 }} category="h4">
+            <Text style={{}} category="h4">
               Welcome to my demo app
             </Text>
-            <Button onPress={() => 'onclicktopbutton'}>BUTTON</Button>
+            <Button onPress={() => props.navigation.navigate('Profile')}>BUTTON</Button>
           </View>
 
           <View style={{ height: 400, alignSelf: 'stretch' }}>
@@ -113,11 +105,48 @@ const AppInner: React.FC = () => {
   )
 }
 
+AppInner.navigationOptions = ({ navigation }) => ({
+  title: 'App Inner',
+})
+
+function HomeScreen() {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Home Screen</Text>
+    </View>
+  )
+}
+
+HomeScreen.navigationOptions = ({ navigation }) => ({
+  title: 'Home',
+})
+
+const AppNavigator = createStackNavigator({
+  Home: {
+    screen: AppInner,
+  },
+  Profile: {
+    screen: HomeScreen,
+  },
+})
+
+const AppContainer = createAppContainer(AppNavigator)
+
 const App: React.FC = () => {
   return (
     <ApolloProvider client={client}>
       <ApplicationProvider mapping={mapping} theme={lightTheme}>
-        <AppInner />
+        {/* <View
+          style={{
+            height: Platform.select({
+              ios: Constants.statusBarHeight,
+              android: 0,
+            }),
+          }}
+        >
+          <StatusBar barStyle={'default'} />
+        </View> */}
+        <AppContainer />
       </ApplicationProvider>
     </ApolloProvider>
   )
