@@ -1,6 +1,13 @@
 import React from 'react'
 import * as Location from 'expo-location'
-import { Platform, ListRenderItemInfo, StatusBar, View, ScrollView } from 'react-native'
+import {
+  Platform,
+  ListRenderItemInfo,
+  StatusBar,
+  View,
+  ScrollView,
+  ImageRequireSource,
+} from 'react-native'
 import { createStackNavigator, createAppContainer } from 'react-navigation'
 import { registerRootComponent } from 'expo'
 import { ApolloProvider } from '@apollo/react-hooks'
@@ -25,6 +32,8 @@ import Camera from './components/Camera/Camera'
 import gql from 'graphql-tag'
 import { useUploadBikePhotoMutation } from './generated/graphql'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import { SignIn1Container } from './screens/auth/KittenAuth/signIn1.container'
+import { ApplicationLoader, Assets } from './components/appLoader/applicationLoader.component'
 // import SignUp from './src/screens/auth/SignUp'
 
 // eslint-disable-next-line
@@ -34,13 +43,39 @@ const UPLOAD_PHOTO_MUTATION = gql`
   }
 `
 
+const images: ImageRequireSource[] = [
+  // require('./assets/images/source/image-profile-1.jpg'),
+  // require('./assets/images/source/image-profile-2.jpg'),
+  // require('./assets/images/source/image-profile-3.jpg'),
+  // require('./assets/images/source/image-profile-4.jpg'),
+  // require('./assets/images/source/image-profile-5.jpg'),
+  // require('./assets/images/source/image-profile-6.jpg'),
+  // require('./assets/images/source/image-profile-7.jpg'),
+  // require('./assets/images/source/image-profile-8.jpg'),
+  // require('./assets/images/source/image-profile-9.jpg'),
+  // require('./assets/images/source/image-profile-10.jpg'),
+]
+
+const fonts: { [key: string]: number } = {
+  'opensans-semibold': require('./assets/fonts/opensans-semibold.ttf'),
+  'opensans-bold': require('./assets/fonts/opensans-bold.ttf'),
+  'opensans-extrabold': require('./assets/fonts/opensans-extra-bold.ttf'),
+  'opensans-light': require('./assets/fonts/opensans-light.ttf'),
+  'opensans-regular': require('./assets/fonts/opensans-regular.ttf'),
+}
+
+const assets: Assets = {
+  images: images,
+  fonts: fonts,
+}
+
 const Container = styled(Layout)`
   flex: 1;
   background-color: red;
   align-items: center;
 `
 
-const AppInner: React.FC = props => {
+const AppInner: React.FC<{ navigation: any }> = props => {
   const [selectedTabIndex, setSelectedTabIndex] = React.useState(0)
   const [location, setLocation] = React.useState<Location.LocationData>(null)
   const [uploadBikePhoto] = useUploadBikePhotoMutation()
@@ -62,7 +97,6 @@ const AppInner: React.FC = props => {
 
               if (await Location.hasServicesEnabledAsync()) {
                 const loc = await Location.getCurrentPositionAsync()
-                console.log('loc', loc)
                 setLocation(loc)
               }
             }}
@@ -122,8 +156,7 @@ const AppInner: React.FC = props => {
     </Container>
   )
 }
-
-AppInner.navigationOptions = ({ navigation }) => ({
+;(AppInner as any).navigationOptions = ({ navigation }) => ({
   title: 'App Inner',
 })
 
@@ -138,8 +171,14 @@ function HomeScreen() {
 HomeScreen.navigationOptions = ({ navigation }) => ({
   title: 'Home',
 })
+;(SignIn1Container as any).navigationOptions = ({ navigation }) => ({
+  header: null,
+})
 
 const AppNavigator = createStackNavigator({
+  SignUp: {
+    screen: SignIn1Container,
+  },
   Home: {
     screen: AppInner,
   },
@@ -152,9 +191,10 @@ const AppContainer = createAppContainer(AppNavigator)
 
 const App: React.FC = () => {
   return (
-    <ApolloProvider client={client}>
-      <ApplicationProvider mapping={mapping} theme={lightTheme}>
-        {/* <View
+    <ApplicationLoader assets={assets}>
+      <ApolloProvider client={client}>
+        <ApplicationProvider mapping={mapping} theme={lightTheme}>
+          {/* <View
           style={{
             height: Platform.select({
               ios: Constants.statusBarHeight,
@@ -164,9 +204,10 @@ const App: React.FC = () => {
         >
           <StatusBar barStyle={'default'} />
         </View> */}
-        <AppContainer />
-      </ApplicationProvider>
-    </ApolloProvider>
+          <AppContainer />
+        </ApplicationProvider>
+      </ApolloProvider>
+    </ApplicationLoader>
   )
 }
 
