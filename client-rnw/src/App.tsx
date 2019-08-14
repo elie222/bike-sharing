@@ -1,4 +1,5 @@
 import React from 'react'
+import * as Location from 'expo-location'
 import { Platform, ListRenderItemInfo, StatusBar, View, ScrollView } from 'react-native'
 import { createStackNavigator, createAppContainer } from 'react-navigation'
 import { registerRootComponent } from 'expo'
@@ -41,67 +42,84 @@ const Container = styled(Layout)`
 
 const AppInner: React.FC = props => {
   const [selectedTabIndex, setSelectedTabIndex] = React.useState(0)
+  const [location, setLocation] = React.useState<Location.LocationData>(null)
   const [uploadBikePhoto] = useUploadBikePhotoMutation()
 
   const data: string[] = ['Item 1', 'Item 2', 'Item 3']
 
   return (
-    <>
-      <Container>
-        <TopNavigation title="Title" subtitle="Subtitle" />
-        <ScrollView style={{ flex: 1, alignSelf: 'stretch' }}>
-          <View style={{ paddingBottom: 30 }}>
-            <Text style={{}} category="h4">
-              Welcome to my demo app
+    <Container>
+      <TopNavigation title="Title" subtitle="Subtitle" />
+      <ScrollView style={{ flex: 1, alignSelf: 'stretch' }}>
+        <View style={{ paddingBottom: 30 }}>
+          <Text style={{}} category="h4">
+            Welcome to my demo app
+          </Text>
+          <Button onPress={() => props.navigation.navigate('Profile')}>BUTTON</Button>
+          <Button
+            onPress={async () => {
+              await Location.requestPermissionsAsync()
+
+              if (await Location.hasServicesEnabledAsync()) {
+                const loc = await Location.getCurrentPositionAsync()
+                console.log('loc', loc)
+                setLocation(loc)
+              }
+            }}
+          >
+            Get Location
+          </Button>
+          {location && (
+            <Text>
+              {`Location. Lat: ${location.coords.latitude} Long: ${location.coords.longitude}`}
             </Text>
-            <Button onPress={() => props.navigation.navigate('Profile')}>BUTTON</Button>
-          </View>
+          )}
+        </View>
 
-          <View style={{ height: 400, alignSelf: 'stretch' }}>
-            <Camera
-              onTakePhoto={async photo => {
-                try {
-                  const file = new ReactNativeFile({
-                    uri: photo.uri,
-                    type: 'image/png',
-                    name: 'i-am-a-name',
-                  })
+        <View style={{ height: 400, alignSelf: 'stretch' }}>
+          <Camera
+            onTakePhoto={async photo => {
+              try {
+                const file = new ReactNativeFile({
+                  uri: photo.uri,
+                  type: 'image/png',
+                  name: 'i-am-a-name',
+                })
 
-                  const result = await uploadBikePhoto({
-                    variables: {
-                      bikeId: 'x123',
-                      file,
-                    },
-                  })
+                const result = await uploadBikePhoto({
+                  variables: {
+                    bikeId: 'x123',
+                    file,
+                  },
+                })
 
-                  console.log('result', result)
-                } catch (error) {
-                  console.error(error)
-                }
-              }}
-            />
-          </View>
-
-          <View style={{ height: 400, alignSelf: 'stretch' }}>
-            <Map />
-          </View>
-
-          <List
-            style={{ height: 400, alignSelf: 'stretch' }}
-            data={data}
-            renderItem={(info: ListRenderItemInfo<string>) => (
-              <ListItem title={info.item} description="Description" onPress={console.log} />
-            )}
+                console.log('result', result)
+              } catch (error) {
+                console.error(error)
+              }
+            }}
           />
-        </ScrollView>
+        </View>
 
-        <BottomNavigation selectedIndex={selectedTabIndex} onSelect={setSelectedTabIndex}>
-          <BottomNavigationTab title="Tab 1" />
-          <BottomNavigationTab title="Tab 2" />
-          <BottomNavigationTab title="Tab 3" />
-        </BottomNavigation>
-      </Container>
-    </>
+        <View style={{ height: 400, alignSelf: 'stretch' }}>
+          <Map />
+        </View>
+
+        <List
+          style={{ height: 400, alignSelf: 'stretch' }}
+          data={data}
+          renderItem={(info: ListRenderItemInfo<string>) => (
+            <ListItem title={info.item} description="Description" onPress={console.log} />
+          )}
+        />
+      </ScrollView>
+
+      <BottomNavigation selectedIndex={selectedTabIndex} onSelect={setSelectedTabIndex}>
+        <BottomNavigationTab title="Tab 1" />
+        <BottomNavigationTab title="Tab 2" />
+        <BottomNavigationTab title="Tab 3" />
+      </BottomNavigation>
+    </Container>
   )
 }
 
