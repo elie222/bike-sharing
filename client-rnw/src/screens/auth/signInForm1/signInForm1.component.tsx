@@ -2,7 +2,7 @@ import React from 'react'
 import { View, ViewProps } from 'react-native'
 import { ThemedComponentProps, ThemeType, withStyles } from 'react-native-ui-kitten'
 import { SignInForm1Data } from './type'
-import { textStyle } from '../../../../components/common/style'
+import { textStyle } from '../../../components/common/style'
 import { PasswordValidator, EmailValidator } from '../validators'
 import { ValidationInput } from './validationInput.component'
 

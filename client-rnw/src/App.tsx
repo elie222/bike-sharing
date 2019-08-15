@@ -31,10 +31,8 @@ import Map from './components/Map/Map'
 import Camera from './components/Camera/Camera'
 import gql from 'graphql-tag'
 import { useUploadBikePhotoMutation } from './generated/graphql'
-import { TouchableOpacity } from 'react-native-gesture-handler'
-import { SignIn1Container } from './screens/auth/KittenAuth/signIn1.container'
+import { SignIn1Container } from './screens/auth/signIn1.container'
 import { ApplicationLoader, Assets } from './components/appLoader/applicationLoader.component'
-// import SignUp from './src/screens/auth/SignUp'
 
 // eslint-disable-next-line
 const UPLOAD_PHOTO_MUTATION = gql`

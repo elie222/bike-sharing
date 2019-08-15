@@ -9,10 +9,10 @@ import {
   Text,
 } from 'react-native-ui-kitten'
 import { SignInFormData } from './types'
-import { ArrowForwardIconOutline } from '../../../assets/icons'
-import { ImageSource, imageSignIn1Bg } from '../../../assets/images'
-import { ScrollableAvoidKeyboard } from '../../../components/common/scrollableAvoidKeyboard.component'
-import { textStyle } from '../../../components/common/style'
+import { ArrowForwardIconOutline } from '../../assets/icons'
+import { ImageSource, imageSignIn1Bg } from '../../assets/images'
+import { ScrollableAvoidKeyboard } from '../../components/common/scrollableAvoidKeyboard.component'
+import { textStyle } from '../../components/common/style'
 import { SignInForm1 } from './signInForm1'
 
 interface ComponentProps {
