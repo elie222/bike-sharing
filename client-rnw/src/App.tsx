@@ -181,9 +181,13 @@ const AuthNavigator = createStackNavigator({
   },
 })
 
-const AuthLoadingScreen: React.FC = () => <Text>'Loading...'</Text>
+const AuthLoadingScreen: React.FC = () => (
+  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <Text>Loading...</Text>
+  </View>
+)
 
-const RootNavigator = (loggedIn: boolean) =>
+const RootNavigator = (loggingIn: boolean, loggedIn: boolean) =>
   createSwitchNavigator(
     {
       AuthLoading: AuthLoadingScreen,
@@ -191,7 +195,7 @@ const RootNavigator = (loggedIn: boolean) =>
       Auth: AuthNavigator,
     },
     {
-      initialRouteName: loggedIn ? 'App' : 'Auth',
+      initialRouteName: loggingIn ? 'AuthLoading' : loggedIn ? 'App' : 'Auth',
     }
   )
 
@@ -203,10 +207,14 @@ const AppContainer: React.FC = () => {
     return () => {}
   }, [])
 
-  const user = userContext.userState.user
-  console.log('AppContainer user', user)
+  const userState = userContext.userState
 
-  let Container = createAppContainer(RootNavigator(!!user))
+  console.log('AppContainer userState', userState)
+
+  const { loggingIn, user } = userState
+
+  // Remove loading state if it's too janky
+  let Container = createAppContainer(RootNavigator(loggingIn, !!user))
 
   return <Container />
 }
