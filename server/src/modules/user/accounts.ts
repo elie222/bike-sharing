@@ -38,7 +38,7 @@ export const setUpAccounts = (connection: any) => {
 export const userTypeDefs = `
   # Our custom fields to add to the user
   extend input CreateUserInput {
-    profile: CreateUserProfileInput!
+    profile: CreateUserProfileInput
     roles: [String!]
   }
   input CreateUserProfileInput {

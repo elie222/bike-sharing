@@ -17,7 +17,7 @@ import { SignInForm1 } from './signInForm1'
 
 interface ComponentProps {
   onSignInPress: (formData: SignInFormData) => void
-  onSignUpPress: () => void
+  onSignUpPress: (formData: SignInFormData) => void
 }
 
 export type SignIn1Props = ThemedComponentProps & ComponentProps
@@ -26,7 +26,7 @@ interface State {
   formData: SignInFormData | undefined
 }
 
-class SignIn1Component extends React.Component<SignIn1Props, State> {
+class SignInComponent extends React.Component<SignIn1Props, State> {
   public state: State = {
     formData: undefined,
   }
@@ -38,7 +38,7 @@ class SignIn1Component extends React.Component<SignIn1Props, State> {
   }
 
   private onSignUpButtonPress = () => {
-    this.props.onSignUpPress()
+    this.props.onSignUpPress(this.state.formData)
   }
 
   private onFormDataChange = (formData: SignInFormData) => {
@@ -88,7 +88,7 @@ class SignIn1Component extends React.Component<SignIn1Props, State> {
   }
 }
 
-export const SignIn1 = withStyles(SignIn1Component, (theme: ThemeType) => ({
+export const SignIn = withStyles(SignInComponent, (theme: ThemeType) => ({
   container: {
     flex: 1,
     paddingVertical: 24,

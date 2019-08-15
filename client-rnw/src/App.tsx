@@ -31,8 +31,9 @@ import Map from './components/Map/Map'
 import Camera from './components/Camera/Camera'
 import gql from 'graphql-tag'
 import { useUploadBikePhotoMutation } from './generated/graphql'
-import { SignIn1Container } from './screens/auth/signIn1.container'
+import { SignInContainer } from './screens/auth/SignInContainer'
 import { ApplicationLoader, Assets } from './components/appLoader/applicationLoader.component'
+import { UserProvider, useUserContext } from './utils/UserContext'
 
 // eslint-disable-next-line
 const UPLOAD_PHOTO_MUTATION = gql`
@@ -169,13 +170,13 @@ function HomeScreen() {
 HomeScreen.navigationOptions = ({ navigation }) => ({
   title: 'Home',
 })
-;(SignIn1Container as any).navigationOptions = ({ navigation }) => ({
+;(SignInContainer as any).navigationOptions = ({ navigation }) => ({
   header: null,
 })
 
 const AppNavigator = createStackNavigator({
   SignUp: {
-    screen: SignIn1Container,
+    screen: SignInContainer,
   },
   Home: {
     screen: AppInner,
@@ -185,14 +186,29 @@ const AppNavigator = createStackNavigator({
   },
 })
 
-const AppContainer = createAppContainer(AppNavigator)
+const AppContainer: React.FC = () => {
+  const userContext = useUserContext()
+
+  React.useEffect(() => {
+    userContext.getUser()
+    return () => {}
+  }, [])
+
+  const user = userContext.userState.user
+  console.log('AppContainer user', user)
+
+  const Container = createAppContainer(AppNavigator)
+
+  return <Container />
+}
 
 const App: React.FC = () => {
   return (
     <ApplicationLoader assets={assets}>
       <ApolloProvider client={client}>
-        <ApplicationProvider mapping={mapping} theme={lightTheme}>
-          {/* <View
+        <UserProvider>
+          <ApplicationProvider mapping={mapping} theme={lightTheme}>
+            {/* <View
           style={{
             height: Platform.select({
               ios: Constants.statusBarHeight,
@@ -202,8 +218,9 @@ const App: React.FC = () => {
         >
           <StatusBar barStyle={'default'} />
         </View> */}
-          <AppContainer />
-        </ApplicationProvider>
+            <AppContainer />
+          </ApplicationProvider>
+        </UserProvider>
       </ApolloProvider>
     </ApplicationLoader>
   )
