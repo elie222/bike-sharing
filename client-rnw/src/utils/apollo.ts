@@ -9,8 +9,9 @@ import { AccountsClient } from '@accounts/client'
 import { accountsLink } from '@accounts/apollo-link'
 import { Platform } from '@unimodules/core'
 import { TokenStorage } from '@accounts/client/lib/types'
-// import { GRAPHQL_URL } from './settings'
-const GRAPHQL_URL = 'http://localhost:4000/graphql'
+import getEnvVars from '../../config/env'
+
+const GRAPHQL_URL = getEnvVars().GRAPHQL_URL
 
 const httpLink = createUploadLink({
   uri: GRAPHQL_URL,
