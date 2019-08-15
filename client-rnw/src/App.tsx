@@ -1,14 +1,7 @@
 import React from 'react'
 import * as Location from 'expo-location'
-import {
-  Platform,
-  ListRenderItemInfo,
-  StatusBar,
-  View,
-  ScrollView,
-  ImageRequireSource,
-} from 'react-native'
-import { createStackNavigator, createAppContainer } from 'react-navigation'
+import { ListRenderItemInfo, View, ScrollView, ImageRequireSource } from 'react-native'
+import { createStackNavigator, createAppContainer, createSwitchNavigator } from 'react-navigation'
 import { registerRootComponent } from 'expo'
 import { ApolloProvider } from '@apollo/react-hooks'
 import styled from '@emotion/native'
@@ -24,7 +17,6 @@ import {
   BottomNavigation,
   BottomNavigationTab,
 } from 'react-native-ui-kitten'
-import Constants from 'expo-constants'
 import { ReactNativeFile } from 'apollo-upload-client'
 import { client } from './utils/apollo'
 import Map from './components/Map/Map'
@@ -175,9 +167,6 @@ HomeScreen.navigationOptions = ({ navigation }) => ({
 })
 
 const AppNavigator = createStackNavigator({
-  SignUp: {
-    screen: SignInContainer,
-  },
   Home: {
     screen: AppInner,
   },
@@ -185,6 +174,26 @@ const AppNavigator = createStackNavigator({
     screen: HomeScreen,
   },
 })
+
+const AuthNavigator = createStackNavigator({
+  SignUp: {
+    screen: SignInContainer,
+  },
+})
+
+const AuthLoadingScreen: React.FC = () => <Text>'Loading...'</Text>
+
+const RootNavigator = (loggedIn: boolean) =>
+  createSwitchNavigator(
+    {
+      AuthLoading: AuthLoadingScreen,
+      App: AppNavigator,
+      Auth: AuthNavigator,
+    },
+    {
+      initialRouteName: loggedIn ? 'App' : 'Auth',
+    }
+  )
 
 const AppContainer: React.FC = () => {
   const userContext = useUserContext()
@@ -197,7 +206,7 @@ const AppContainer: React.FC = () => {
   const user = userContext.userState.user
   console.log('AppContainer user', user)
 
-  const Container = createAppContainer(AppNavigator)
+  let Container = createAppContainer(RootNavigator(!!user))
 
   return <Container />
 }
@@ -208,16 +217,6 @@ const App: React.FC = () => {
       <ApolloProvider client={client}>
         <UserProvider>
           <ApplicationProvider mapping={mapping} theme={lightTheme}>
-            {/* <View
-          style={{
-            height: Platform.select({
-              ios: Constants.statusBarHeight,
-              android: 0,
-            }),
-          }}
-        >
-          <StatusBar barStyle={'default'} />
-        </View> */}
             <AppContainer />
           </ApplicationProvider>
         </UserProvider>
