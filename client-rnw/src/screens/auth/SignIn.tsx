@@ -13,7 +13,7 @@ import { ArrowForwardIconOutline } from '../../assets/icons'
 import { ImageSource, imageSignIn1Bg } from '../../assets/images'
 import { ScrollableAvoidKeyboard } from '../../components/common/scrollableAvoidKeyboard.component'
 import { textStyle } from '../../components/common/style'
-import { SignInForm1 } from './signInForm1'
+import { SignInForm } from './signInForm'
 
 interface ComponentProps {
   onSignInPress: (formData: SignInFormData) => void
@@ -24,26 +24,26 @@ export type SignIn1Props = ThemedComponentProps & ComponentProps
 
 interface State {
   formData: SignInFormData | undefined
+  showSignUp: boolean
 }
 
 class SignInComponent extends React.Component<SignIn1Props, State> {
   public state: State = {
     formData: undefined,
+    showSignUp: true, // false is show sign in
   }
 
   private backgroundImage: ImageSource = imageSignIn1Bg
 
-  private onSignInButtonPress = () => {
-    this.props.onSignInPress(this.state.formData)
+  private toggleScreen = () => this.setState(state => ({ ...state, showSignUp: !state.showSignUp }))
+  private submit = () => {
+    if (this.state.showSignUp) this.onSignUpButtonPress()
+    else this.onSignInButtonPress()
   }
 
-  private onSignUpButtonPress = () => {
-    this.props.onSignUpPress(this.state.formData)
-  }
-
-  private onFormDataChange = (formData: SignInFormData) => {
-    this.setState({ formData })
-  }
+  private onSignInButtonPress = () => this.props.onSignInPress(this.state.formData)
+  private onSignUpButtonPress = () => this.props.onSignUpPress(this.state.formData)
+  private onFormDataChange = (formData: SignInFormData) => this.setState({ formData })
 
   private renderSignUpButtonIcon = (style: StyleType): React.ReactElement<ImageProps> => {
     const { themedStyle } = this.props
@@ -59,7 +59,7 @@ class SignInComponent extends React.Component<SignIn1Props, State> {
         <ImageBackground style={themedStyle.container} source={this.backgroundImage.imageSource}>
           <View style={themedStyle.signInContainer}>
             <Text style={themedStyle.signInLabel} category="h4">
-              SIGN IN
+              {this.state.showSignUp ? `SIGN UP` : `SIGN IN`}
             </Text>
             <Button
               style={themedStyle.signUpButton}
@@ -68,19 +68,19 @@ class SignInComponent extends React.Component<SignIn1Props, State> {
               appearance="ghost"
               size="giant"
               icon={this.renderSignUpButtonIcon}
-              onPress={this.onSignUpButtonPress}
+              onPress={this.toggleScreen}
             >
-              Sign Up
+              {this.state.showSignUp ? `Sign In` : `Sign Up`}
             </Button>
           </View>
-          <SignInForm1 style={themedStyle.formContainer} onDataChange={this.onFormDataChange} />
+          <SignInForm style={themedStyle.formContainer} onDataChange={this.onFormDataChange} />
           <Button
             size="large"
             textStyle={textStyle.button}
             disabled={!this.state.formData}
-            onPress={this.onSignInButtonPress}
+            onPress={this.submit}
           >
-            SIGN IN
+            {this.state.showSignUp ? `SIGN UP` : `SIGN IN`}
           </Button>
         </ImageBackground>
       </ScrollableAvoidKeyboard>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, ViewProps } from 'react-native'
 import { ThemedComponentProps, ThemeType, withStyles } from 'react-native-ui-kitten'
-import { SignInForm1Data } from './type'
+import { SignInFormData } from './type'
 import { textStyle } from '../../../components/common/style'
 import { PasswordValidator, EmailValidator } from '../validators'
 import { ValidationInput } from './validationInput.component'
@@ -11,23 +11,23 @@ interface ComponentProps {
    * Will emit changes depending on validation:
    * Will be called with form value if it is valid, otherwise will be called with undefined
    */
-  onDataChange: (data: SignInForm1Data | undefined) => void
+  onDataChange: (data: SignInFormData | undefined) => void
 }
 
-export type SignInForm1Props = ThemedComponentProps & ViewProps & ComponentProps
+export type SignInFormProps = ThemedComponentProps & ViewProps & ComponentProps
 
 interface State {
   email: string | undefined
   password: string | undefined
 }
 
-class SignInForm1Component extends React.Component<SignInForm1Props, State> {
+class SignInFormComponent extends React.Component<SignInFormProps, State> {
   public state: State = {
     email: undefined,
     password: undefined,
   }
 
-  public componentDidUpdate(prevProps: SignInForm1Props, prevState: State) {
+  public componentDidUpdate(prevProps: SignInFormProps, prevState: State) {
     const oldFormValid: boolean = this.isValid(prevState)
     const newFormValid: boolean = this.isValid(this.state)
 
@@ -53,7 +53,7 @@ class SignInForm1Component extends React.Component<SignInForm1Props, State> {
     this.setState({ password })
   }
 
-  private isValid = (value: SignInForm1Data): boolean => {
+  private isValid = (value: SignInFormData): boolean => {
     const { email, password } = value
 
     return email !== undefined && password !== undefined
@@ -88,7 +88,7 @@ class SignInForm1Component extends React.Component<SignInForm1Props, State> {
   }
 }
 
-export const SignInForm1 = withStyles(SignInForm1Component, (theme: ThemeType) => ({
+export const SignInForm = withStyles(SignInFormComponent, (theme: ThemeType) => ({
   container: {},
   emailInput: {
     backgroundColor: 'rgba(0, 0, 0, 0.35)',

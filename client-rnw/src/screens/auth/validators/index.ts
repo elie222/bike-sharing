@@ -1,7 +1,7 @@
 export const PATTERN_NAME: RegExp = /[a-z ,.'-]+/
 export const PATTERN_DOB: RegExp = /\d{1,2}\/\d{1,2}\/\d{4}/
 export const PATTERN_EMAIL: RegExp = /\S+@\S+\.\S+/
-export const PATTERN_PASSWORD: RegExp = /[a-z0-9]{8,}/
+export const PATTERN_PASSWORD: RegExp = /[a-z0-9]{1,}/
 export const PATTERN_PHONE: RegExp = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/
 export const PATTERN_SMS_CODE: RegExp = /\d{4}/
 export const PATTERN_CARD_NUMBER: RegExp = /\d{4} \d{4} \d{4} \d{4}/

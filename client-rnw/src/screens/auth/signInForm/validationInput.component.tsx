@@ -88,6 +88,7 @@ class ValidationInputComponent extends React.Component<ValidationInputProps, Sta
         value={this.state.value}
         style={[themedStyle.container, style]}
         onChangeText={this.onChangeText}
+        textStyle={themedStyle.text}
       />
     )
   }
@@ -95,4 +96,7 @@ class ValidationInputComponent extends React.Component<ValidationInputProps, Sta
 
 export const ValidationInput = withStyles(ValidationInputComponent, (theme: ThemeType) => ({
   container: {},
+  text: {
+    color: 'white',
+  },
 }))

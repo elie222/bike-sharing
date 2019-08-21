@@ -8,20 +8,13 @@ interface Props {}
 export function SignInContainer(props: Props) {
   const userContext = useUserContext()
 
-  const onSignInPress = async (data: SignInFormData) => {
-    console.log('onSignInPress', data)
-    // this.props.navigation.goBack()
-    // this.props.navigation.navigate('Home')
-
+  const onSignUpPress = async (data: SignInFormData) => {
     await userContext.signUp(data.email, data.password)
   }
 
-  // const onSignUpPress = () => {
-  //   this.props.navigation.navigate({
-  //     routeName: 'Sign Up 1',
-  //     key: 'SignIn1Container',
-  //   })
-  // }
+  const onSignInPress = async (data: SignInFormData) => {
+    await userContext.logIn(data.email, data.password)
+  }
 
-  return <SignIn onSignInPress={onSignInPress} onSignUpPress={onSignInPress} />
+  return <SignIn onSignInPress={onSignInPress} onSignUpPress={onSignUpPress} />
 }

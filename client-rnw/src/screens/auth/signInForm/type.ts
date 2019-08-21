@@ -1,4 +1,4 @@
-export interface SignInForm1Data {
+export interface SignInFormData {
   email: string
   password: string
 }
