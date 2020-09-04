@@ -46,7 +46,7 @@
     "prettier": "^1.16.4",
     "pretty-quick": "^1.10.0",
     "reflect-metadata": "^0.1.10",
-    "type-graphql": "^0.17.0",
+    "type-graphql": "^0.17.6",
     "typedi": "^0.8.0",
     "typeorm": "0.2.15",
     "uuid": "^3.3.2"
