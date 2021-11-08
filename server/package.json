@@ -28,7 +28,7 @@
     "@accounts/server": "^0.13.0",
     "@elastic/elasticsearch": "^6.7.0-rc.1",
     "@graphql-modules/core": "^0.6.6",
-    "apollo-server": "^2.4.8",
+    "apollo-server": "^2.25.3",
     "apollo-server-express": "^2.5.0",
     "body-parser": "^1.18.1",
     "cloudinary": "^1.14.0",
