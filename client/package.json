@@ -59,7 +59,7 @@
     "@types/storybook__react": "^4.0.1",
     "apollo-storybook-react": "^0.2.1",
     "babel-preset-expo": "^5.1.1",
-    "flat": "^4.1.0",
+    "flat": "^5.0.1",
     "husky": "^2.4.1",
     "plop": "^2.3.0",
     "prettier": "^1.18.2",
