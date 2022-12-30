@@ -12,7 +12,7 @@
     "@types/node-fetch": "^2.3.4",
     "@types/uuid": "^3.4.4",
     "cross-env": "^5.2.0",
-    "flat": "^4.1.0",
+    "flat": "^5.0.1",
     "jest": "^24.7.1",
     "nodemon": "^1.18.10",
     "plop": "^2.3.0",
